@@ -2,23 +2,49 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
-    render() {
-      return (
-        <button className="square">
-          {/* TODO */}
-        </button>
-      );
-    }
-  }
-  
+
+//Square Component//
+
+function Square(props) {
+  return (
+    <button className="square" onClick ={props.onClick}>
+      {[props.value]}
+    </button>
+  )
+}
+
+
+//Board Component//
+
   class Board extends React.Component {
-    renderSquare(i) {
-      return <Square />;
+    constructor(props) {
+      super(props);
+    this.state = { 
+      squares: Array(9).fill(null),
+      xIsNext: true,
+      };
     }
-  
+   
+   handleClick(i) {
+     const squares = this.state.squares.slice();
+     squares[i] = this.state.xIsNext ? 'X' : 'O';
+     this.setState({
+      squares: squares,
+      xIsNext: !this.setState.xIsNext,
+      });
+   }
+
+    renderSquare(i) {
+      return (
+      <Square 
+      value={this.state.squares[i]}
+      onClick={() => this.handleClick(i)}
+       />
+
+      );
+  }
     render() {
-      const status = 'Next player: X';
+      const status = 'Next player:  ' + (this.state.xIsNext ? 'X' : 'O');
   
       return (
         <div>
@@ -43,6 +69,8 @@ class Square extends React.Component {
     }
   }
   
+//Game Component//
+
   class Game extends React.Component {
     render() {
       return (
@@ -65,4 +93,5 @@ class Square extends React.Component {
     <Game />,
     document.getElementById('root')
   );
+  
   
